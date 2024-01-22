@@ -1,0 +1,8 @@
+{
+  "required": ["voterID"],
+  "properties": {
+    "voterID": { "type": "string" },
+    "candidateID": { "type": "string" },
+    "authority": { "type": "string" }
+  }
+}
