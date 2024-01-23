@@ -6,7 +6,7 @@ const {
   logoutVoter,
   resetPasswordRequest,
   resetPassword,
-} = require("../controller/AuthController");
+} = require("../controller/VoteAuthController");
 const passport = require("passport");
 
 const router = express.Router();

@@ -22,6 +22,7 @@ const userSchema = new Schema(
       default: "voter",
     },
     VoterID: { type: String },
+    Constituency: { type: String },
     addresses: { type: [Schema.Types.Mixed] },
     // TODO:  We can make a separate Schema for this
 
@@ -45,5 +46,5 @@ userSchema.set("toJSON", {
   },
 });
 
-User = mongoose.model("User", userSchema);
-module.exports = User;
+Voter = mongoose.model("Voter", userSchema);
+module.exports = Voter;

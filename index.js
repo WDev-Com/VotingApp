@@ -8,7 +8,7 @@ const server = express();
 // Passport Import & Express Session
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User");
+const User = require("./models/Voter");
 const Candidate = require("./models/Candidate");
 const EleCommission = require("./models/ElectionCommisson");
 const Minner = require("./models/Minner");
@@ -29,7 +29,7 @@ const {
 } = require("./service/common");
 const path = require("path");
 
-const authrouter = require("./routes/Auth");
+const authrouter = require("./routes/VoteRouterAuth");
 const voterouter = require("./routes/VoteRouter");
 const candidaterouter = require("./routes/CandidateRoute");
 const CandidateOperationRoutes = require("./routes/CandidateOperationRoutes");
@@ -37,6 +37,8 @@ const MinnerAuthRoutes = require("./routes/MinnerRoute");
 const MinnerOperationRoutes = require("./routes/MinnerOperationRoutes");
 const EleCommissonAuthRoutes = require("./routes/EleCommissionRoute");
 const EleCommissonOperationRoutes = require("./routes/EleCommissionOperationRoutes");
+const BlockChainRoutes = require("./routes/BlockChainRoutes");
+
 // JWT Option
 const opts = {};
 opts.jwtFromRequest = cookieExtractor;
@@ -59,6 +61,7 @@ server.use(passport.authenticate("session"));
 
 server.use(cors());
 
+server.use("/VoteChain", BlockChainRoutes.router);
 server.use("/Auth", authrouter.router);
 server.use("/Vote", isAuth(), checkRole("voter"), voterouter.router);
 server.use("/MemberGovtAuth", candidaterouter.router);

@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const MinnerSchema = new Schema(
   {
-    name: { type: String, required: [true, "Please Enter Your Name"] },
+    name: { type: String, required: [false, "Please Enter Your Name"] },
     username: {
       type: String,
       required: [true, "Please Enter Your UserName"],
@@ -11,7 +11,7 @@ const MinnerSchema = new Schema(
     },
     email: {
       type: String,
-      required: [true, "Please Enter Your Email"],
+      required: [false, "Please Enter Your Email"],
       unique: true,
     },
     password: { type: Buffer, required: true },

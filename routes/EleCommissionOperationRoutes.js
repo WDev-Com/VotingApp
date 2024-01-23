@@ -5,7 +5,9 @@ const {
   updateCandidateRole,
   updateMinnerRole,
   updateElectionCommissioner,
+  CreateMinnerInBlockChain,
   deleteMinner,
+  CountVoteOfCandidate,
   deleteCandidate,
 } = require("../controller/EleCommissonOperation");
 const passport = require("passport");
@@ -24,6 +26,9 @@ Body :-
 }
 */
 router.patch("/GiveRollToMinner/:id", updateMinnerRole);
+router.post("/CreateMinnerInBlockChain", CreateMinnerInBlockChain);
+router.post("/CountVoteOfCandidate/:id", CountVoteOfCandidate);
+
 router.delete("/RemoveMinner/:id", deleteMinner);
 router.delete("/RemoveCandidate/:id", deleteCandidate);
 exports.router = router;

@@ -1,7 +1,44 @@
 const EleCommission = require("../models/ElectionCommisson");
 const Candidate = require("../models/Candidate");
 const Minner = require("../models/Minner");
+const MinnerBodyValid = require("../models/MinnerBodyForBlockChain.json");
 const jwt = require("jsonwebtoken");
+const Ajv = require("ajv");
+
+const ajv = new Ajv();
+
+const validate = ajv.compile(MinnerBodyValid);
+
+exports.CreateMinnerInBlockChain = async (req, res) => {
+  try {
+    if (validate(req.body)) {
+      fetch("http://localhost:5000/createMinner", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req.body),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          // console.log("Raw response from server:", data);
+          const jsonData = JSON.stringify(data);
+          console.log("New Minner added successfully : ", jsonData);
+        })
+        .catch((error) => {
+          throw new Error(
+            "EleCommissonOper.js Line No 34 : Error adding new Minner:",
+            error
+          );
+        });
+      res.status(200).send("Minner added successfully");
+    } else {
+      res.status(200).send(validate.errors);
+    }
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
 
 exports.updateElectionCommissioner = async (req, res) => {
   const { id } = req.params;
@@ -33,6 +70,24 @@ exports.updateElectionCommissioner = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(400).json(err);
+  }
+};
+
+exports.CountVoteOfCandidate = async (req, res) => {
+  try {
+    let id = req.params.id;
+    console.log(id);
+    if (id) {
+      let result = await fetch(`http://localhost:5000/CountVote/${id}`);
+      let data = await result.json();
+      // Add the Vote Count To Candidate Database
+      console.log("data.count : ", data.count);
+      res.status(200).send(data);
+    } else {
+      res.status(400).send("Candidates does not exist");
+    }
+  } catch (err) {
+    res.status(400).json({ err: err });
   }
 };
 

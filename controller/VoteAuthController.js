@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/Voter");
 const Candidate = require("../models/Candidate");
 const jwt = require("jsonwebtoken");
 // For password encryption

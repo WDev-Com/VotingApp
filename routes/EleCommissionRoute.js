@@ -6,7 +6,7 @@ const {
   logoutEleCommission,
 } = require("../controller/EleCommissonAuth");
 const passport = require("passport");
-
+const { createMinner } = require("../controller/MinnerAuth");
 const router = express.Router();
 //  /auth is already added in base path
 router
@@ -16,6 +16,8 @@ router
     passport.authenticate("localEleCommission"),
     loginEleCommission
   )
+
+  .post("/Create-minner", createMinner)
   .get(
     "/check-EleCommission",
     passport.authenticate("jwtEleCommission"),
