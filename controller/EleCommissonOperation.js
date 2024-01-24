@@ -75,19 +75,28 @@ exports.updateElectionCommissioner = async (req, res) => {
 
 exports.CountVoteOfCandidate = async (req, res) => {
   try {
-    let id = req.params.id;
-    console.log(id);
-    if (id) {
-      let result = await fetch(`http://localhost:5000/CountVote/${id}`);
+    let candidateID = req.params.id;
+    console.log(candidateID);
+    if (candidateID) {
+      let result = await fetch(
+        `http://localhost:5000/CountVote/${candidateID}`
+      );
       let data = await result.json();
+      console.log("data : " + data);
       // Add the Vote Count To Candidate Database
+      await Candidate.findOneAndUpdate(
+        { CandidateID: candidateID },
+        { $set: { VoteCount: data.count } },
+        { new: true }
+      );
       console.log("data.count : ", data.count);
       res.status(200).send(data);
     } else {
       res.status(400).send("Candidates does not exist");
     }
   } catch (err) {
-    res.status(400).json({ err: err });
+    console.log(err);
+    res.status(400).json({ error: err.toString() });
   }
 };
 

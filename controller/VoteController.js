@@ -1,4 +1,5 @@
 const voteSchema = require("../models/Vote.json");
+const Candidate = require("../models/Candidate");
 const Ajv = require("ajv");
 
 const ajv = new Ajv();
@@ -9,6 +10,21 @@ exports.getCheck = async (req, res) => {
     res.status(200).send("Hello World");
   } catch (err) {
     res.status(400).json(err);
+  }
+};
+
+exports.findAllCandidatesByConstituency = async (req, res) => {
+  try {
+    let consti = req.params.consti;
+    console.log("consti : ", consti);
+    const candidates = await Candidate.find(
+      { Constituency: consti },
+      "name profileimages CandidateID Constituency Party"
+    );
+    console.log(candidates);
+    res.status(200).send(candidates);
+  } catch (error) {
+    console.error("Error finding candidates:", error);
   }
 };
 
@@ -24,9 +40,8 @@ exports.creatingVote = async (req, res) => {
       })
         .then((response) => response.text())
         .then((data) => {
-          // console.log("Raw response from server:", data);
-          const jsonData = JSON.stringify(data);
-          console.log("New Vote added successfully : ", jsonData);
+          console.log("@@@@@@@@", data);
+          res.send(data);
         })
         .catch((error) => {
           throw new Error(
@@ -34,11 +49,11 @@ exports.creatingVote = async (req, res) => {
             error
           );
         });
-      res.status(200).send("Vote added successfully");
     } else {
       res.status(200).send(validate.errors);
     }
   } catch (err) {
+    console.log("VoteController Line No 56", err);
     res.status(400).json(err);
   }
 };

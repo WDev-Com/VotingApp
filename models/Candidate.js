@@ -24,6 +24,7 @@ const candidateSchema = new Schema(
     CandidateID: { type: String },
     Constituency: { type: String },
     Party: { type: String },
+    PartySymbol: { type: String },
     VoteCount: { type: Number },
     addresses: { type: [Schema.Types.Mixed] },
     // TODO:  We can make a separate Schema for this

@@ -3,6 +3,7 @@ const {
   getCheck,
   creatingVote,
   GetData,
+  findAllCandidatesByConstituency,
 } = require("../controller/VoteController");
 const passport = require("passport");
 
@@ -15,4 +16,11 @@ router.post("/CreatingVote", creatingVote);
 http://localhost:8080/Vote/CreatingVote
 */
 router.post("/GettingData", GetData);
+router.get(
+  "/GetAllCandidateOFConstituency/:consti",
+  findAllCandidatesByConstituency
+);
+/*
+http://localhost:8080/Vote/GetAllCandidateOFConstituency/Pali
+*/
 exports.router = router;

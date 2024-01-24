@@ -7,12 +7,13 @@ const { sanitizeUser, sendMail } = require("../service/common");
 
 /* Format for post request from client 
 {
-  "name" : "ram",
-  "username" : "ramRRDA",       // Unique username
-  "email":"ram@gmailcom",       // Unique email
+  "name" : "sham",
+  "username" : "shamBTLLB",       
+  "email":"sham@gmailcom",       
   "password" : "Dada2003",
   "role" : "voter",
-  "ID" : "",
+  "VoterID" : "BTLLB",
+  "Constituency":"Lanja",
   "addresses" : "",
   "profileimages" : ""
 }
