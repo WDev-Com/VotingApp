@@ -102,6 +102,11 @@ exports.CountVoteOfCandidate = async (req, res) => {
   }
 };
 
+// This function generates a unique voter number that will be used
+// when the voter gives their vote.
+// The voter cannot cast their vote without this number.
+// This number will be provided by the Election Officer at the time of voting.
+
 exports.genrateVoterConfirmationNo = async (req, res) => {
   try {
     let voterId = req.params.voterId;
