@@ -11,7 +11,7 @@ const router = express.Router();
 
 //  /auth is already added in base path
 router.post("/CheckRoutes", getCheck);
-router.post("/CreatingVote", creatingVote);
+router.post("/CreatingVote/:VoteConNo", creatingVote);
 /*
 http://localhost:8080/Vote/CreatingVote
 */

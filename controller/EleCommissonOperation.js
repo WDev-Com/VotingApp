@@ -1,6 +1,8 @@
 const EleCommission = require("../models/ElectionCommisson");
 const Candidate = require("../models/Candidate");
 const Minner = require("../models/Minner");
+const Voter = require("../models/Voter");
+const VoterConfirmationNo = require("../models/VoteConfirmNo");
 const MinnerBodyValid = require("../models/MinnerBodyForBlockChain.json");
 const jwt = require("jsonwebtoken");
 const Ajv = require("ajv");
@@ -93,6 +95,42 @@ exports.CountVoteOfCandidate = async (req, res) => {
       res.status(200).send(data);
     } else {
       res.status(400).send("Candidates does not exist");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err.toString() });
+  }
+};
+
+exports.genrateVoterConfirmationNo = async (req, res) => {
+  try {
+    let voterId = req.params.voterId;
+    const existingVoter = await VoterConfirmationNo.findOne({
+      VoterID: voterId,
+    });
+    const FindVoter = await Voter.findOne({
+      VoterID: voterId,
+    });
+    if (FindVoter !== null) {
+      console.log("FindVoter : ", FindVoter.VoterID);
+    } else {
+      console.log("FindVoter Null");
+    }
+    if (FindVoter === null || voterId === null) {
+      res.status(400).send("Voter ID Not found");
+    } else if (!existingVoter || voterId !== existingVoter.VoterID) {
+      let token = "";
+      for (let i = 0; i < voterId.length; i++) {
+        token += Math.floor(voterId.codePointAt(i) * Math.random());
+      }
+      const confirmNo = new VoterConfirmationNo({
+        VoterID: voterId,
+        VoterConfirmNo: token,
+      });
+      const resultNo = await confirmNo.save();
+      res.status(200).send(resultNo);
+    } else {
+      res.status(400).send("Voter Code Aleady Exists");
     }
   } catch (err) {
     console.log(err);

@@ -7,6 +7,7 @@ const {
   updateElectionCommissioner,
   CreateMinnerInBlockChain,
   deleteMinner,
+  genrateVoterConfirmationNo,
   CountVoteOfCandidate,
   deleteCandidate,
 } = require("../controller/EleCommissonOperation");
@@ -28,6 +29,8 @@ Body :-
 router.patch("/GiveRollToMinner/:id", updateMinnerRole);
 router.post("/CreateMinnerInBlockChain", CreateMinnerInBlockChain);
 router.post("/CountVoteOfCandidate/:id", CountVoteOfCandidate);
+
+router.post("/GenrateVoterConfirmationNo/:voterId", genrateVoterConfirmationNo);
 
 router.delete("/RemoveMinner/:id", deleteMinner);
 router.delete("/RemoveCandidate/:id", deleteCandidate);

@@ -63,28 +63,36 @@ server.use(cors());
 
 server.use("/VoteChain", BlockChainRoutes.router);
 server.use("/Auth", authrouter.router);
-server.use("/Vote", isAuth(), checkRole("voter"), voterouter.router);
+server.use("/Vote", voterouter.router);
+//isAuth(), checkRole("voter"),
 server.use("/MemberGovtAuth", candidaterouter.router);
 server.use(
   "/MemberGovtOperation",
-  isAuthGovt(),
-  checkRole("candidate"),
+
   CandidateOperationRoutes.router
 );
+/* 
+ isAuthGovt(),
+  checkRole("candidate"),
+*/
 server.use("/EleCommissonAuth", EleCommissonAuthRoutes.router);
 server.use(
   "/EleCommisson",
-  isAuthEleCommission(),
-  checkRole("officer"),
+
   EleCommissonOperationRoutes.router
 );
+/*
+  isAuthEleCommission(),
+  checkRole("officer"),
+*/
 server.use("/MinningAuth", MinnerAuthRoutes.router);
 server.use(
   "/Minning",
-  isAuthMinner(),
-  checkRole("minner"),
+
   MinnerOperationRoutes.router
 );
+/*  isAuthMinner(),
+  checkRole("minner"), */
 // Passport Strategies
 ///////////////////////// For Voter
 passport.use(
