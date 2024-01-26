@@ -151,15 +151,68 @@ exports.getEleCommission = async (req, res) => {
   }
 };
 
+exports.getAllVoter = async (req, res) => {
+  try {
+    console.log("req.query : ", req.query);
+    let query = {};
+
+    // Filter by Constituency
+    if (req.query.constituency) {
+      query.Constituency = req.query.constituency;
+    }
+
+    // Filter by Role
+    if (req.query.role) {
+      query.role = req.query.role;
+    }
+
+    // Pagination
+    const pageSize = req.query._limit ? parseInt(req.query._limit) : 10;
+    const page = req.query._page ? parseInt(req.query._page) : 1;
+    const skip = pageSize * (page - 1);
+
+    const voters = await Voter.find(
+      query,
+      "name username email role VoterID Constituency addresses"
+    )
+      .skip(skip)
+      .limit(pageSize);
+
+    res.status(200).json(voters);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
 exports.getAllCandidate = async (req, res) => {
   try {
-    const candidates = await Candidate.find(
-      {},
-      "name username email role CandidateID Constituency Party addresses"
-    );
-    if (candidates) {
-      res.status(200).json(candidates);
-    }
+    // Pagination parameters
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 10;
+
+    // Constituency filter
+    const constituencyFilter = req.query.constituency
+      ? { Constituency: req.query.constituency }
+      : {};
+
+    // Role filter
+    const roleFilter = req.query.role ? { role: req.query.role } : {};
+
+    // Party filter
+    const partyFilter = req.query.party ? { Party: req.query.party } : {};
+
+    // Combine filters
+    const filters = { ...constituencyFilter, ...roleFilter, ...partyFilter };
+
+    // Query candidates with pagination and filters
+    const candidates = await Candidate.find(filters)
+      .select(
+        "name username email role CandidateID Constituency Party addresses"
+      )
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.status(200).json(candidates);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -167,10 +220,42 @@ exports.getAllCandidate = async (req, res) => {
 
 exports.getAllMinner = async (req, res) => {
   try {
-    const minner = await Minner.find({}, "name username email role MinnerID");
-    if (minner) {
-      res.status(200).json(minner);
-    }
+    // Pagination parameters
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 10;
+
+    // Role filter
+    const roleFilter = req.query.role ? { role: req.query.role } : {};
+
+    // Combine filters
+    const filters = { ...roleFilter };
+
+    // Query minners with pagination and filters
+    const minners = await Minner.find(filters)
+      .select("name username email role MinnerID")
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.status(200).json(minners);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+//////////Work In Progress
+exports.updateVoterRole = async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body; // Extract the fields you want to update
+  try {
+    console.log("id: " + id);
+    console.log("role: " + role);
+    const updatedFields = {};
+    if (role) updatedFields.role = role;
+    const user = await Voter.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
+    let newRole = user.role;
+    res.status(200).send(`Updated Successfully, The New Roll : ${newRole}`);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -224,6 +309,16 @@ exports.deleteCandidate = async (req, res) => {
   const { id } = req.params;
   try {
     const doc = await Candidate.findByIdAndDelete(id);
+    res.status(200).json(doc);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+exports.deleteVoter = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const doc = await Voter.findByIdAndDelete(id);
     res.status(200).json(doc);
   } catch (err) {
     res.status(400).json(err);

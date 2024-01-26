@@ -18,8 +18,8 @@ const userSchema = new Schema(
 
     role: {
       type: String,
-      required: [true, "Role Should Be Provided"],
-      default: "voter",
+      required: [false, "Role Should Be Provided"],
+      default: "user",
     },
     VoterID: { type: String },
     Constituency: { type: String },
