@@ -59,8 +59,15 @@ server.use(
 server.use(cookieParser());
 server.use(passport.authenticate("session"));
 
-server.use(cors());
-
+server.use(
+  cors({
+    exposedHeaders: [
+      "X-TotalCandidates-Count",
+      "X-TotalVoter-Count",
+      "X-TotalVoter-Count",
+    ],
+  })
+);
 server.use("/VoteChain", BlockChainRoutes.router);
 server.use("/Auth", authrouter.router);
 server.use("/Vote", voterouter.router);

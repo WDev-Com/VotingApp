@@ -68,7 +68,7 @@ exports.updateElectionCommissioner = async (req, res) => {
     const user = await EleCommission.findByIdAndUpdate(id, updatedFields, {
       new: true,
     });
-
+    console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(400).json(err);
@@ -145,15 +145,31 @@ exports.genrateVoterConfirmationNo = async (req, res) => {
 
 exports.getEleCommission = async (req, res) => {
   try {
-    res.status(200).send("Hello World Election Commission!");
+    let EleCommissionID = req.params.id;
+    console.log("Line No 149: EleCommissionID", EleCommissionID);
+
+    // Use findOne instead of find to get a single document
+    const eleCommission = await EleCommission.findOne(
+      { _id: EleCommissionID },
+      "name username email role OffierID addresses profileimages"
+    );
+    if (!eleCommission) {
+      // If EleCommission with the given ID is not found, return a 404 response
+      return res.status(404).json({ error: "EleCommission not found" });
+    }
+    console.log(eleCommission);
+    // If EleCommission is found, send the data in the response
+    res.status(200).json(eleCommission);
   } catch (err) {
-    res.status(400).json(err);
+    // If there is any error during the process, log the error and send a 500 response
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 exports.getAllVoter = async (req, res) => {
   try {
-    console.log("req.query : ", req.query);
+    console.log("req.query ==== : ", req.query);
     let query = {};
 
     // Filter by Constituency
@@ -171,13 +187,17 @@ exports.getAllVoter = async (req, res) => {
     const page = req.query._page ? parseInt(req.query._page) : 1;
     const skip = pageSize * (page - 1);
 
-    const voters = await Voter.find(
+    const votersQuery = Voter.find(
       query,
       "name username email role VoterID Constituency addresses"
-    )
-      .skip(skip)
-      .limit(pageSize);
+    );
 
+    // Execute the query to get voters
+    const voters = await votersQuery.skip(skip).limit(pageSize);
+
+    // Get the total count of voters
+    const totalVoters = await Voter.countDocuments(query);
+    res.set("X-TotalVoter-Count", totalVoters);
     res.status(200).json(voters);
   } catch (err) {
     res.status(400).json(err);
@@ -186,6 +206,7 @@ exports.getAllVoter = async (req, res) => {
 
 exports.getAllCandidate = async (req, res) => {
   try {
+    console.log(req.query);
     // Pagination parameters
     const page = req.query.page || 1;
     const pageSize = req.query.pageSize || 10;
@@ -205,13 +226,18 @@ exports.getAllCandidate = async (req, res) => {
     const filters = { ...constituencyFilter, ...roleFilter, ...partyFilter };
 
     // Query candidates with pagination and filters
-    const candidates = await Candidate.find(filters)
-      .select(
-        "name username email role CandidateID Constituency Party addresses"
-      )
+    const candidatesQuery = Candidate.find(filters).select(
+      "name username email role CandidateID Constituency Party addresses"
+    );
+
+    // Execute the query to get candidates
+    const candidates = await candidatesQuery
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
+    // Get the total count of candidates
+    const totalCandidates = await Candidate.countDocuments(filters);
+    res.set("X-TotalCandidates-Count", totalCandidates);
     res.status(200).json(candidates);
   } catch (err) {
     res.status(400).json(err);
@@ -231,18 +257,25 @@ exports.getAllMinner = async (req, res) => {
     const filters = { ...roleFilter };
 
     // Query minners with pagination and filters
-    const minners = await Minner.find(filters)
-      .select("name username email role MinnerID")
+    const minnersQuery = Minner.find(filters).select(
+      "name username email role MinnerID"
+    );
+
+    // Execute the query to get minners
+    const minners = await minnersQuery
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
+    // Get the total count of minners
+    const totalMinners = await Minner.countDocuments(filters);
+
+    res.set("X-TotalMinner-Count", totalMinners);
     res.status(200).json(minners);
   } catch (err) {
     res.status(400).json(err);
   }
 };
 
-//////////Work In Progress
 exports.updateVoterRole = async (req, res) => {
   const { id } = req.params;
   const { role } = req.body; // Extract the fields you want to update

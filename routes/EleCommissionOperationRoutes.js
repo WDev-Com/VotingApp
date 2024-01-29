@@ -21,8 +21,8 @@ const {
 
 const router = express.Router();
 //  /auth is already added in base path
-router.get("/UpdateElectionCommissioner/:id", updateElectionCommissioner);
-router.post("/GetEleCommission", getEleCommission);
+router.patch("/UpdateElectionCommissioner/:id", updateElectionCommissioner);
+router.post("/GetEleCommission/:id", getEleCommission);
 router.get("/GetAllCandidate", getAllCandidate);
 /* 
 http://localhost:8080/EleCommisson/getAllCandidate?page=2&pageSize=2&constituency=Pali&role=candidate&party=BJP
