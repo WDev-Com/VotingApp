@@ -48,7 +48,7 @@ opts.secretOrKey = process.env.SECRET_KEY;
 const endpointSecret = process.env.End_Point_Secret_key;
 
 //middleware
-server.use(express.json()); // to parse req.body
+// to parse req.body
 server.use(
   session({
     secret: process.env.Session_Secret_Key,
@@ -68,6 +68,8 @@ server.use(
     ],
   })
 );
+server.use(express.json());
+// server.use(express.static("dist"));
 server.use("/VoteChain", BlockChainRoutes.router);
 server.use("/Auth", authrouter.router);
 server.use("/Vote", voterouter.router);

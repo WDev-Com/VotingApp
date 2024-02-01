@@ -281,14 +281,14 @@ exports.updateVoterRole = async (req, res) => {
   const { role } = req.body; // Extract the fields you want to update
   try {
     console.log("id: " + id);
-    console.log("role: " + role);
+    console.log("Controller Line 284 role: " + role);
     const updatedFields = {};
     if (role) updatedFields.role = role;
     const user = await Voter.findByIdAndUpdate(id, updatedFields, {
       new: true,
     });
     let newRole = user.role;
-    res.status(200).send(`Updated Successfully, The New Roll : ${newRole}`);
+    res.status(200).json(`Updated Successfully, The New Roll : ${newRole}`);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -332,7 +332,11 @@ exports.deleteMinner = async (req, res) => {
   const { id } = req.params;
   try {
     const doc = await Minner.findByIdAndDelete(id);
-    res.status(200).json(doc);
+    if (doc != null) {
+      res.status(200).json(doc);
+    } else {
+      throw new Error(`Cannot delete`);
+    }
   } catch (err) {
     res.status(400).json(err);
   }
@@ -342,7 +346,11 @@ exports.deleteCandidate = async (req, res) => {
   const { id } = req.params;
   try {
     const doc = await Candidate.findByIdAndDelete(id);
-    res.status(200).json(doc);
+    if (doc != null) {
+      res.status(200).json(doc);
+    } else {
+      throw new Error(`Cannot delete`);
+    }
   } catch (err) {
     res.status(400).json(err);
   }
@@ -350,10 +358,17 @@ exports.deleteCandidate = async (req, res) => {
 
 exports.deleteVoter = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   try {
     const doc = await Voter.findByIdAndDelete(id);
-    res.status(200).json(doc);
+    console.log(doc);
+    if (doc != null) {
+      res.status(200).json(doc);
+    } else {
+      throw new Error(`Cannot delete`);
+    }
   } catch (err) {
-    res.status(400).json(err);
+    console.log(err);
+    res.status(400).json({ err: "Cannot Delete Already Deleted" });
   }
 };

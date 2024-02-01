@@ -56,7 +56,7 @@ exports.createUser = async (req, res) => {
               );
               res
                 .cookie("jwtVoter", token, {
-                  expires: new Date(Date.now() + 3600000),
+                  expires: new Date(Date.now() + 36000),
                   httpOnly: true,
                 })
                 .status(201)
@@ -88,7 +88,7 @@ exports.loginVoter = async (req, res) => {
   const user = req.user; // new added
   res
     .cookie("jwtVoter", req.user.token, {
-      expires: new Date(Date.now() + 3600000),
+      expires: new Date(Date.now() + 36000),
       httpOnly: true,
     })
     .status(201)

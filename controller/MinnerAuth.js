@@ -60,8 +60,8 @@ exports.createMinner = async (req, res) => {
                   process.env.JWT_SECRET_KEY
                 );
                 res
-                  .cookie("jwtVoter", token, {
-                    expires: new Date(Date.now() + 3600000),
+                  .cookie("jwtMinner", token, {
+                    expires: new Date(Date.now() + 36000),
                     httpOnly: true,
                   })
                   .status(201)
@@ -96,7 +96,7 @@ exports.loginMinner = async (req, res) => {
   const user = req.user; // new added
   res
     .cookie("jwtMinner", req.user.token, {
-      expires: new Date(Date.now() + 3600000),
+      expires: new Date(Date.now() + 36000),
       httpOnly: true,
     })
     .status(201)

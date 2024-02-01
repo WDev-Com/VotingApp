@@ -56,7 +56,7 @@ exports.createEleCommission = async (req, res) => {
               );
               res
                 .cookie("jwtEleCommission", token, {
-                  expires: new Date(Date.now() + 3600000),
+                  expires: new Date(Date.now() + 36000),
                   httpOnly: true,
                 })
                 .status(201)
@@ -88,7 +88,7 @@ exports.loginEleCommission = async (req, res) => {
   const user = req.user; // new added
   res
     .cookie("jwtEleCommission", req.user.token, {
-      expires: new Date(Date.now() + 3600000),
+      expires: new Date(Date.now() + 36000),
       httpOnly: true,
     })
     .status(201)
@@ -98,7 +98,8 @@ exports.loginEleCommission = async (req, res) => {
 
 exports.checkEleCommission = async (req, res) => {
   if (req.user) {
-    res.json(req.user);
+    console.log("{   req.user   }", req.user);
+    res.json({ id: req.userid, role: req.user.role });
   } else {
     res.sendStatus(401);
   }

@@ -26,6 +26,7 @@ exports.sanitizeUser = (user) => {
 
 exports.cookieExtractor = function (req) {
   let token = null;
+  var startTime = performance.now();
   if (req && req.cookies && req.cookies["jwtVoter"]) {
     token = req.cookies["jwtVoter"];
   } else if (req && req.cookies && req.cookies["jwtCandidate"]) {
@@ -37,6 +38,9 @@ exports.cookieExtractor = function (req) {
   } else {
     token = null;
   }
+  var endTime = performance.now();
+  console.log(`Call to doSomething took ${endTime - startTime} milliseconds`);
+  console.log("token : ", token);
   return token;
 };
 
