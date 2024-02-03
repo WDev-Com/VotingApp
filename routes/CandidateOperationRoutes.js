@@ -4,6 +4,6 @@ const passport = require("passport");
 
 const router = express.Router();
 //  /auth is already added in base path
-router.post("/Getcandidate", getCadidate);
+router.post("/GetcandidateById/:ID", getCadidate);
 
 exports.router = router;

@@ -58,16 +58,23 @@ server.use(
 );
 server.use(cookieParser());
 server.use(passport.authenticate("session"));
-
+/*
+Because of the CORS error the front End should be built with providing 
+the endpoint like "http://localhost:8080" instead keep empty like 
+fetch("/api/getAllVoters")
+*/
 server.use(
   cors({
+    origin: "*",
     exposedHeaders: [
       "X-TotalCandidates-Count",
       "X-TotalVoter-Count",
       "X-TotalVoter-Count",
     ],
+    credentials: true,
   })
 );
+
 server.use(express.json());
 // server.use(express.static("dist"));
 server.use("/VoteChain", BlockChainRoutes.router);
@@ -84,6 +91,10 @@ server.use(
  isAuthGovt(),
   checkRole("candidate"),
 */
+/*
+Will Login with Any user check the role of the user is 
+As per the rules of the API
+*/
 server.use("/EleCommissonAuth", EleCommissonAuthRoutes.router);
 server.use(
   "/EleCommisson",
@@ -91,7 +102,7 @@ server.use(
   EleCommissonOperationRoutes.router
 );
 /*
-  isAuthEleCommission(),
+ isAuthEleCommission(),
   checkRole("officer"),
 */
 server.use("/MinningAuth", MinnerAuthRoutes.router);
@@ -110,7 +121,7 @@ passport.use(
     // by default passport uses username
     try {
       const user = await User.findOne({ username: username });
-      console.log("Line No 112 index.js ", username, password, { user });
+      console.log("Line No 124 index.js ", username, password, { user });
       if (!user) {
         return done(null, false, { message: "invalid credentials" }); // for safety
       }
@@ -157,7 +168,7 @@ passport.use(
     // by default passport uses username
     try {
       const user = await Candidate.findOne({ username: username });
-      console.log("Line No 112 index.js ", username, password, { user });
+      console.log("Line No 171 index.js ", username, password, { user });
       if (!user) {
         return done(null, false, { message: "invalid credentials" }); // for safety
       }
@@ -205,7 +216,7 @@ passport.use(
     // by default passport uses username
     try {
       const user = await EleCommission.findOne({ username: username });
-      console.log("Line No 112 index.js ", username, password, { user });
+      console.log(" ", username, password, { user });
       if (!user) {
         return done(null, false, { message: "invalid credentials" }); // for safety
       }
@@ -253,7 +264,7 @@ passport.use(
     // by default passport uses username
     try {
       const user = await Minner.findOne({ username: username });
-      console.log("Line No 112 index.js ", username, password, { user });
+      console.log("Line No 267 index.js ", username, password, { user });
       if (!user) {
         return done(null, false, { message: "invalid credentials" }); // for safety
       }

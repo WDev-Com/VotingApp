@@ -8,7 +8,7 @@ const passport = require("passport");
 
 const router = express.Router();
 //  /auth is already added in base path
-router.post("/GetMinner", getMinner);
+router.post("/GetMinnerByID/:ID", getMinner);
 router.post("/MineVotes/:ID", voteMinning);
 router.post("/AddNewBlock/:ID", AddNewBlockToBlockChain);
 

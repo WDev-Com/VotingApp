@@ -39,8 +39,12 @@ exports.cookieExtractor = function (req) {
     token = null;
   }
   var endTime = performance.now();
-  console.log(`Call to doSomething took ${endTime - startTime} milliseconds`);
-  console.log("token : ", token);
+  console.log(
+    `Common Line No 42 Call to doSomething took ${
+      endTime - startTime
+    } milliseconds`
+  );
+  console.log("Common Line No 43 token : ", token);
   return token;
 };
 

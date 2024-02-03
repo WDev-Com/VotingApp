@@ -3,9 +3,25 @@ const jwt = require("jsonwebtoken");
 
 exports.getMinner = async (req, res) => {
   try {
-    res.status(200).send("Hello World Minner!");
+    let MinnerID = req.params.ID;
+    console.log("Line No 149: MinnerID : ", MinnerID);
+
+    // Use findOne instead of find to get a single document
+    const minner = await Minner.findOne(
+      { _id: MinnerID },
+      "name username email role OffierID addresses profileimages"
+    );
+    if (!minner) {
+      // If EleCommission with the given ID is not found, return a 404 response
+      return res.status(404).json({ error: "EleCommission not found" });
+    }
+    console.log(minner);
+    // If EleCommission is found, send the data in the response
+    res.status(200).json(minner);
   } catch (err) {
-    res.status(400).json(err);
+    // If there is any error during the process, log the error and send a 500 response
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
