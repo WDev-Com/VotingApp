@@ -15,7 +15,7 @@ const userSchema = new Schema(
       unique: true,
     },
     password: { type: Buffer, required: true },
-
+    authority: { type: String },
     role: {
       type: String,
       required: [false, "Role Should Be Provided"],

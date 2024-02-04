@@ -87,13 +87,26 @@ exports.creatingVote = async (req, res, next) => {
   }
 };
 
-exports.GetData = async (req, res) => {
+exports.getVoterByID = async (req, res) => {
   try {
-    const response = await fetch("http://localhost:5000/");
-    const data = await response.json();
-    console.log(data);
-    res.json(data);
+    let VoterID = req.params.ID;
+    console.log("Line No 7: VoterID : ", VoterID);
+
+    // Use findOne instead of find to get a single document
+    const voter = await Voter.findOne(
+      { _id: VoterID },
+      "name username email role authority VoterID Constituency addresses profileimages"
+    );
+    if (!voter) {
+      // If EleCommission with the given ID is not found, return a 404 response
+      return res.status(404).json({ error: "voter not found" });
+    }
+    console.log(voter);
+    // If EleCommission is found, send the data in the response
+    res.status(200).json(voter);
   } catch (err) {
-    res.status(400).json(err);
+    // If there is any error during the process, log the error and send a 500 response
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

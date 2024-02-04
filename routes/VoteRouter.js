@@ -2,8 +2,8 @@ const express = require("express");
 const {
   getCheck,
   creatingVote,
-  GetData,
   findAllCandidatesByConstituency,
+  getVoterByID,
 } = require("../controller/VoteController");
 const passport = require("passport");
 
@@ -15,7 +15,6 @@ router.post("/CreatingVote/:VoteConNo", creatingVote);
 /*
 http://localhost:8080/Vote/CreatingVote
 */
-router.post("/GettingData", GetData);
 router.get(
   "/GetAllCandidateOFConstituency/:consti",
   findAllCandidatesByConstituency
@@ -23,4 +22,5 @@ router.get(
 /*
 http://localhost:8080/Vote/GetAllCandidateOFConstituency/Pali
 */
+router.post("/GetVoterByID/:ID", getVoterByID);
 exports.router = router;

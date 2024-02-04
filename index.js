@@ -78,8 +78,8 @@ server.use(
 server.use(express.json());
 // server.use(express.static("dist"));
 server.use("/VoteChain", BlockChainRoutes.router);
-server.use("/Auth", authrouter.router);
-server.use("/Vote", voterouter.router);
+server.use("/VoterAuth", authrouter.router);
+server.use("/VoterOperation", voterouter.router);
 //isAuth(), checkRole("voter"),
 server.use("/MemberGovtAuth", candidaterouter.router);
 server.use(
