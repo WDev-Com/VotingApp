@@ -189,7 +189,11 @@ exports.getAllVoter = async (req, res) => {
 
     const votersQuery = Voter.find(
       query,
+<<<<<<< Updated upstream
       "name username email role VoterID Constituency addresses"
+=======
+      "name username email role VoterID Constituency addresses profileimages"
+>>>>>>> Stashed changes
     );
 
     // Execute the query to get voters
@@ -227,7 +231,11 @@ exports.getAllCandidate = async (req, res) => {
 
     // Query candidates with pagination and filters
     const candidatesQuery = Candidate.find(filters).select(
+<<<<<<< Updated upstream
       "name username email role CandidateID Constituency Party addresses"
+=======
+      "name username email role CandidateID Constituency Party addresses profileimages PartySymbol"
+>>>>>>> Stashed changes
     );
 
     // Execute the query to get candidates
@@ -258,7 +266,11 @@ exports.getAllMinner = async (req, res) => {
 
     // Query minners with pagination and filters
     const minnersQuery = Minner.find(filters).select(
+<<<<<<< Updated upstream
       "name username email role MinnerID"
+=======
+      "name username email role MinnerID profileimages region"
+>>>>>>> Stashed changes
     );
 
     // Execute the query to get minners

@@ -20,6 +20,7 @@ const MinnerSchema = new Schema(
       required: [false, "Role Should Be Provided"],
       default: "none",
     },
+    region: { type: String },
     MinnerID: { type: String },
     profileimages: { type: String },
     salt: Buffer,
